@@ -3,6 +3,8 @@ package com.parse.livequery;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import org.json.JSONObject;
+
 public interface SubscriptionHandling<T extends ParseObject> {
 
     /**
@@ -49,11 +51,11 @@ public interface SubscriptionHandling<T extends ParseObject> {
     int getRequestId();
 
     interface HandleEventsCallback<T extends ParseObject> {
-        void onEvents(ParseQuery<T> query, Subscription.Event event, T object);
+        void onEvents(ParseQuery<T> query, Subscription.Event event, T object, JSONObject objectJson);
     }
 
     interface HandleEventCallback<T extends ParseObject> {
-        void onEvent(ParseQuery<T> query, T object);
+        void onEvent(ParseQuery<T> query, T object, JSONObject jsonObject);
     }
 
     interface HandleErrorCallback<T extends ParseObject> {

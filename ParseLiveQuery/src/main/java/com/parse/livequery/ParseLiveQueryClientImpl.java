@@ -322,8 +322,9 @@ class ParseLiveQueryClientImpl implements ParseLiveQueryClient {
         final int requestId = jsonObject.getInt("requestId");
         final Subscription<T> subscription = subscriptionForRequestId(requestId);
         if (subscription != null) {
-            T object = ParseObject.fromJSON(jsonObject.getJSONObject("object"), subscription.getQueryState().className(), ParseDecoder.get(), subscription.getQueryState().selectedKeys());
-            subscription.didReceive(event, subscription.getQuery(), object);
+            JSONObject parseObjectJson = jsonObject.getJSONObject("object");
+            T object = ParseObject.fromJSON(parseObjectJson, subscription.getQueryState().className(), ParseDecoder.get(), subscription.getQueryState().selectedKeys());
+            subscription.didReceive(event, subscription.getQuery(), object, parseObjectJson);
         }
     }
 

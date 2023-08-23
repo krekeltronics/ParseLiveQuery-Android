@@ -3,6 +3,8 @@ package com.parse.livequery;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,9 +35,9 @@ class Subscription<T extends ParseObject> implements SubscriptionHandling<T> {
     public Subscription<T> handleEvent(final Event event, final HandleEventCallback<T> callback) {
         return handleEvents(new HandleEventsCallback<T>() {
             @Override
-            public void onEvents(ParseQuery<T> query, Event callbackEvent, T object) {
+            public void onEvents(ParseQuery<T> query, Event callbackEvent, T object, JSONObject jsonObject) {
                 if (callbackEvent == event) {
-                    callback.onEvent(query, object);
+                    callback.onEvent(query, object, jsonObject);
                 }
             }
         });
@@ -77,10 +79,12 @@ class Subscription<T extends ParseObject> implements SubscriptionHandling<T> {
      *
      * @param event The event that has been received from the server.
      * @param query The query that the event occurred on.
+     * @param object The Parse object this event belongs to.
+     * @param objectJson The raw JSON representing the Parse object.
      */
-    /* package */ void didReceive(Event event, ParseQuery<T> query, T object) {
+    /* package */ void didReceive(Event event, ParseQuery<T> query, T object, JSONObject objectJson) {
         for (HandleEventsCallback<T> handleEventsCallback : handleEventsCallbacks) {
-            handleEventsCallback.onEvents(query, event, object);
+            handleEventsCallback.onEvents(query, event, object, objectJson);
         }
     }
 
